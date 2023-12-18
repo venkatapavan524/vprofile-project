@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  vproapp:
+    build: 
+      context: ./Docker-files/app
+    ports:
+      - 8080:8080
+    image: venkatapavan524/vproapp
+    container_name: vproapp
+
+
+  vprodb:
+    build:
+      context: ./Docker-files/db
+    ports: 
+     - 3306:3306
+    image: venkatapavan524/database
+    container_name: vprodb
+    environment: 
+      - MYSQL_ROOT_PASSWORD=vprodbpass
+
+  vprocache01:
+    image: memcached
+    ports:
+      - "11211:11211"
+
+  vpromq01:
+    image: rabbitmq
+    ports: 
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
+  vproweb: 
+    build: 
+      context: ./Docker-files/web
+    ports:
+     - 80:80
+    image: venkatapavan524/vproweb
+    container_name: vproweb
+
